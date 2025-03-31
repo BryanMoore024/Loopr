@@ -174,7 +174,7 @@ export default function ProfileSetupScreen({ navigation }) {
         <View className="items-center mb-6">
           <TouchableOpacity onPress={handleImageUpload} className="mb-2">
             <Image
-              source={profilePictureUri ? { uri: profilePictureUri } : defaultProfilePic}
+              source={profilePictureUri ? { uri: profilePictureUri } : (profilePictureUrl ? { uri: profilePictureUrl } : defaultProfilePic)}
               className="w-32 h-32 rounded-full border-2 border-white/50"
               resizeMode="cover"
             />

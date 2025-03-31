@@ -76,6 +76,12 @@ export default function SignUpScreen({ navigation }) {
             <Text className="text-center text-looprPurple font-semibold text-lg">Sign Up</Text>
           )}
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Welcome')}
+          className="bg-transparent py-4 rounded-xl border border-white"
+  >
+          <Text className="text-center text-white font-semibold text-lg"> Back </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

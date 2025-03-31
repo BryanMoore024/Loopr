@@ -3,7 +3,8 @@ module.exports = function (api) {
   return {
     // Add jsxImportSource back, wrap preset in array
     presets: [
-      ["babel-preset-expo", { jsxImportSource: "nativewind" }]
+      ["babel-preset-expo", { jsxImportSource: "nativewind" }],
+      "nativewind/babel",
     ],
     // Remove nativewind/babel from plugins
     plugins: [
