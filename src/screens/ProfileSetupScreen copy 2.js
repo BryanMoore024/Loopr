@@ -11,7 +11,8 @@ import {   View,
   ActivityIndicator,
   Platform,
   StyleSheet,
-  SafeAreaView } from 'react-native';
+  KeyboardAvoidingView
+ } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { supabase } from '../../supabase'; // 
 import { Picker } from '@react-native-picker/picker';
@@ -19,6 +20,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import mime from 'mime';
 import { Buffer } from 'buffer';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 if (!global.Buffer) {
   global.Buffer = Buffer;
@@ -214,7 +216,8 @@ export default function ProfileSetupScreen({ navigation }) {
 
         // 4. Success
         Alert.alert('Success', 'Profile saved!');
-        navigation.replace('Dashboard'); // Navigate on success
+        navigation.replace('MainTabs');
+
 
     } catch (error) {
         console.error("Profile Setup Error Object:", error); // Log full error
@@ -244,10 +247,16 @@ export default function ProfileSetupScreen({ navigation }) {
     );
   }
   return (
-    <SafeAreaView className="flex-1 bg-looprPurple" edges={['bottom', 'left', 'right']}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 16 }}
-                  keyboardShouldPersistTaps="handled"
-                  showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={80}
+        className="flex-1"
+>
+        <SafeAreaView className="flex-1 bg-looprPurple" edges={['bottom', 'left', 'right']}>
+          <ScrollView
+      contentContainerStyle={{ flexGrow: 1, padding: 16, paddingBottom: 80 }}
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
 >
         <Text className="text-3xl font-bold my-6 text-white text-center">Profile Setup</Text>
 
@@ -297,12 +306,19 @@ export default function ProfileSetupScreen({ navigation }) {
           </View>
 
         {/* Club Distances - Populated from state */}
-        <Text className="text-xl ...">Club Distances ({units})</Text>
-        {Object.keys(clubDistances).map((club) => (
-          <View key={club} /* ... */ >
-            <Text /* ... */ >{club}</Text>
-            <TextInput value={clubDistances[club] || ''} /* Use empty string if value is null/undefined */ /* ... other props ... */ />
-          </View>
+        <Text className="text-xl font-semibold mb-3 text-white mt-4">Club Distances ({units})</Text>
+                {Object.keys(clubDistances).map((club) => (
+                  <View key={club} className="flex-row items-center justify-between mb-3">
+                    <Text className="text-white w-1/3">{club}</Text>
+                    <TextInput
+                      className={`${textInputClass} py-2 w-2/3 text-center mb-0`}
+                      placeholder={`Avg. ${units}`}
+                      placeholderTextColor="#aaa"
+                      value={clubDistances[club]}
+                      onChangeText={(value) => handleClubDistanceChange(club, value)}
+                      keyboardType="numeric"
+                    />
+                  </View>
         ))}
 
         {/* Save Button */}
@@ -315,6 +331,7 @@ export default function ProfileSetupScreen({ navigation }) {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 } // *** End of Component function ***
 
