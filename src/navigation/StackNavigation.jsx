@@ -34,7 +34,7 @@ export default function StackNavigation() {
   <Stack.Screen
     name="ProfileSetup"
     component={ProfileSetupScreen}
-    options={{ headerShown: true }}
+    options={{ headerShown: false }}
   />
   <Stack.Screen
     name="MainTabs"

@@ -2,6 +2,10 @@ import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ResponsiveImage from '../components/ResponsiveImage';
+import { StatusBar } from 'react-native';
+
+<StatusBar barStyle="light-content" backgroundColor="#27084e" />
+
 
 export default function WelcomeScreen({ navigation }) {
   return (
