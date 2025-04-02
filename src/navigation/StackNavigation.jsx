@@ -7,6 +7,8 @@ import ProfileSetupScreen from '../screens/ProfileSetupScreen'; // make sure thi
 import DashboardScreen from '../screens/DashboardScreen'; // make sure this exists
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MainTabs from './MainTabs.js';
+import StartGameScreen from '../screens/StartGameScreen';
+import GameSetupScreen from '../screens/GameSetupScreen';
 
 
 
@@ -41,6 +43,16 @@ export default function StackNavigation() {
     component={MainTabs}
     options={{ headerShown: false }}
   />
+  <Stack.Screen
+  name="StartGame"
+  component={StartGameScreen}
+  options={{ headerShown: true, title: 'Start a Game' }} // this adds a back button
+/>
+<Stack.Screen
+  name="GameSetup"
+  component={GameSetupScreen}
+  options={{ title: 'Game Setup' }}
+/>
 </Stack.Navigator>
   );
 }

@@ -1,24 +1,17 @@
 // screens/DashboardScreen.js
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import profilePlaceholder from '../../assets/profile-placeholder.png';
-import { supabase } from '../../supabase'; // 
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { supabase } from '../../supabase';
 
-
-
-export default function DashboardScreen() {
-  const navigation = useNavigation();
+export default function DashboardScreen({ navigation }) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
       setLoading(true);
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
 
       if (session?.user) {
         const { data, error } = await supabase
@@ -45,22 +38,20 @@ export default function DashboardScreen() {
     );
   }
 
-
   return (
-    <View className="flex-1 bg-looprPurple pt-12 px-5">
+    <SafeAreaView className="flex-1 bg-looprPurple px-5">
       {/* Top Header */}
-      <View className="flex-row items-center justify-between mb-4">
+      <View className="flex-row items-center justify-between mt-4 mb-6">
         {/* Profile Pic Button */}
         <TouchableOpacity onPress={() => navigation.navigate('ProfileSetup')}>
-        <Image
-source={
-  profile?.profile_picture && profile.profile_picture !== ''
-    ? { uri: profile.profile_picture }
-    : require('../../assets/profile-placeholder.png')
-}
-  className="w-10 h-10 rounded-full border border-white"
-/>
-
+          <Image
+            source={
+              profile?.profile_picture
+                ? { uri: profile.profile_picture }
+                : require('../../assets/profile-placeholder.png')
+            }
+            className="w-10 h-10 rounded-full border border-white"
+          />
         </TouchableOpacity>
 
         {/* Centered Title */}
@@ -69,25 +60,41 @@ source={
         </Text>
       </View>
 
-      {/* Dashboard Content Goes Here */}
-      <Text className="text-white text-2xl mb-2">Welcome back, {profile?.name || 'Golfer'}!</Text>
+      {/* Welcome Text */}
+      <Text className="text-white text-2xl mb-2">
+        Welcome back, {profile?.name || 'Golfer'}!
+      </Text>
+
+      {/* Update Profile */}
       <TouchableOpacity
-  className="bg-white py-4 px-6 rounded-xl mb-4"
-  onPress={() => navigation.navigate('ProfileSetup')}
->
-  <Text className="text-center text-looprPurple font-semibold text-lg">Update My Profile</Text>
-</TouchableOpacity>
+        className="bg-white py-4 px-6 rounded-xl mb-4"
+        onPress={() => navigation.navigate('ProfileSetup')}
+      >
+        <Text className="text-center text-looprPurple font-semibold text-lg">
+          Update My Profile
+        </Text>
+      </TouchableOpacity>
 
-<TouchableOpacity
-  className="bg-red-500 py-4 px-6 rounded-xl mt-4"
-  onPress={async () => {
-    await supabase.auth.signOut();
-    navigation.replace('Login');
-  }}
->
-  <Text className="text-center text-white font-semibold text-lg">Log Out</Text>
-</TouchableOpacity>
+      {/* Start Game */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('StartGame')}
+        className="bg-green-500 py-5 px-6 rounded-full mt-4 mb-6 shadow-lg"
+      >
+        <Text className="text-white font-bold text-center text-lg">Start a Round</Text>
+      </TouchableOpacity>
 
-    </View>
+      {/* Log Out */}
+      <TouchableOpacity
+        className="bg-red-500 py-4 px-6 rounded-xl mt-4"
+        onPress={async () => {
+          await supabase.auth.signOut();
+          navigation.replace('Login');
+        }}
+      >
+        <Text className="text-center text-white font-semibold text-lg">
+          Log Out
+        </Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 }
